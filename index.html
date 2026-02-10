@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
     <title>Pricing Plans</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <button class="theme-toggle" type="button" aria-label="Toggle dark mode">Theme</button>
     <div class="cards-container">
         <div class="card">
-            <h1 class="card-title">Hobby</h1>
+            <h3 class="card-title">Hobby</h3>
             <p class="card-price">Free</p>
             <div class="card-content">
                 <p class="includes-text">Includes:</p>
@@ -31,7 +36,7 @@
             <button class="download-button">Download</button>
         </div>
         <div class="card">
-            <h1 class="card-title">Pro</h1>
+            <h3 class="card-title">Pro</h3>
             <p class="card-price">$20/mo.</p>
             <div class="card-content">
                 <p class="includes-text">Everything in Hobby, plus:</p>
@@ -57,5 +62,32 @@
             <button class="download-button">Get Pro</button>
         </div>
     </div>
+    <script>
+        (function () {
+            const STORAGE_KEY = 'theme-preference';
+            const toggle = document.querySelector('.theme-toggle');
+            const root = document.documentElement;
+
+            function getColorPreference() {
+                if (localStorage.getItem(STORAGE_KEY)) return localStorage.getItem(STORAGE_KEY);
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+
+            function setPreference(theme) {
+                localStorage.setItem(STORAGE_KEY, theme);
+                root.dataset.theme = theme;
+                toggle.setAttribute('aria-label', 'Toggle ' + (theme === 'dark' ? 'light' : 'dark') + ' mode');
+                toggle.textContent = theme === 'dark' ? '☀ Light' : '☽ Dark';
+            }
+
+            setPreference(getColorPreference());
+
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ({ matches: isDark }) => {
+                if (!localStorage.getItem(STORAGE_KEY)) setPreference(isDark ? 'dark' : 'light');
+            });
+
+            toggle.addEventListener('click', () => setPreference(getColorPreference() === 'dark' ? 'light' : 'dark'));
+        })();
+    </script>
 </body>
 </html>
