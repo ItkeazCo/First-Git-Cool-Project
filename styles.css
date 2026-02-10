@@ -1,17 +1,53 @@
+/* Best practice dark mode: CSS variables + system preference + user override */
+
+:root {
+    /* Light theme (default) */
+    --color-bg: #f7f7f4;
+    --color-card-bg: #f2f1ed;
+    --color-text-primary: #26251e;
+    --color-text-secondary: rgba(38, 37, 30, 0.5);
+    --color-text-muted: #4a4a4a;
+    --color-button-bg: #e6e5e0;
+    --color-button-bg-hover: #D8D6CE;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --color-bg: #1a1a1a;
+        --color-card-bg: #2d2d2d;
+        --color-text-primary: #e8e8e8;
+        --color-text-secondary: #a8a8a8;
+        --color-text-muted: #b0b0b0;
+        --color-button-bg: #404040;
+        --color-button-bg-hover: #4d4d4d;
+    }
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    color-scheme: light dark;
+}
+
+p {
+    color: var(--color-text-secondary);
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: #f5f5f5;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .cards-container {
@@ -24,33 +60,37 @@ body {
 }
 
 .card {
-    background-color: #f2f1ed;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-card-bg);
+    transition: background-color 0.3s ease;
     border-radius: 12px;
-    padding: 40px 32px;
+    padding: 16px;
     width: 320px;
+    height: 380px;
     flex-shrink: 0;
 }
 
 .card-title {
-    font-size: 32px;
-    font-weight: 600;
-    color: #333;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--color-text-primary);
     margin-bottom: 8px;
 }
 
 .card-price {
     font-size: 20px;
-    color: #666;
+    color: var(--color-text-secondary);
     margin-bottom: 24px;
 }
 
 .card-content {
-    margin-bottom: 32px;
+    flex: 1;
 }
 
 .includes-text {
     font-size: 16px;
-    color: #333;
+    color: var(--color-text-secondary);
     margin-bottom: 16px;
 }
 
@@ -62,35 +102,56 @@ body {
 .features-list li {
     display: flex;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 4px;
     font-size: 15px;
-    color: #333;
+    color: var(--color-text-primary);
 }
 
 .checkmark {
-    color: #4a4a4a;
+    color: var(--color-text-muted);
     font-size: 18px;
     margin-right: 12px;
     font-weight: bold;
 }
 
 .download-button {
+    margin-top: auto;
     width: fit-content;
-    background-color: #e6e5e0;
+    background-color: var(--color-button-bg);
     border: none;
     border-radius: 999px;
     padding: 14px 24px;
     font-size: 16px;
     font-weight: 500;
-    color: #333;
+    color: var(--color-text-primary);
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
 .download-button:hover {
-    background-color: #D8D6CE;
+    background-color: var(--color-button-bg-hover);
 }
 
 .download-button:active {
-    background-color: #D8D6CE;
+    background-color: var(--color-button-bg-hover);
+}
+
+/* Theme toggle */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: var(--color-button-bg);
+    border: none;
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+    background-color: var(--color-button-bg-hover);
 }
